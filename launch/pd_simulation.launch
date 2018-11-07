@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="robot" default="lwa4p_extended"/>
+    <arg name="robot_env" default="empty"/>
+    <arg name="component_name" value="arm"/>
+
+    <group ns="$(arg component_name)">
+
+        <rosparam command="load" file="$(find pd_motion_control)/config/parameter.yaml"/>
+
+        <node pkg="pd_motion_control" type="kinematics_node" name="kinematics_node" cwd="node" respawn="true" output="screen"/>
+
+        <group if="$(arg debug)">
+                <node pkg="pd_motion_control" type="test_kinematic_chain.py" name="test_kinematic_chain" cwd="node" respawn="false" output="screen"/>
+                <node pkg="cob_twist_controller" type="debug_trajectory_marker_node" name="debug_trajectory_marker_node" cwd="node" respawn="false" output="screen"/>
+                <node pkg="cob_obstacle_distance" type="debug_obstacle_distance_node" name="debug_obstacle_distance_node" cwd="node" respawn="false" output="screen"/>
+                <node pkg="cob_obstacle_distance" type="test_interactive_obstacle_node.py" name="test_interactive_obstacle_node" cwd="node" respawn="false" output="screen"/>
+        </group>
+
+    </group>
+
+
+
+</launch>

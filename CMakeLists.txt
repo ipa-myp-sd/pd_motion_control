@@ -127,9 +127,9 @@ include_directories(include
 include_directories(${dynamic_reconfigure_PACKAGE_PATH}/cmake/cfgbuild.cmake)
 FIND_LIBRARY(libacado libacado_toolkit_s.so ${ACADO_DIR}/build/lib)
 
-add_executable(${PROJECT_NAME} src/kinematics.cpp)
-add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(${PROJECT_NAME}
+add_executable(kinematics_node src/kinematics.cpp)
+add_dependencies(kinematics_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(kinematics_node
     ${catkin_LIBRARIES}
     ${orocos_kdl_LIBRARIES}
 )
