@@ -65,7 +65,7 @@ bool KinematicChain::initialize(const std::string& robot_description, const std:
 
         ROS_INFO_STREAM_NAMED("KinematicChain::initialize",
                               "joint name: " << joint_name.c_str() << "  limit.min_position: " << limit.min_position
-                                             << "  limit.max_position: " << limit.max_position << "  limit.max_velocity"
+                                             << "  limit.max_position: " << limit.max_position << "  limit.max_velocity:  "
                                              << limit.max_velocity);
     }
 
@@ -351,6 +351,8 @@ int main(int argc, char* argv[])
     ros::init(argc, argv, ros::this_node::getName());
     ros::NodeHandle nh;
 
+    const std::string& node_namespace =  ros::this_node::getNamespace().substr(1);
+
     std::string base_frame, tip_frame, rbt_description;
 
     if (!nh.searchParam("/robot_description", rbt_description) || !nh.getParam("/robot_description", rbt_description))
@@ -360,13 +362,13 @@ int main(int argc, char* argv[])
         // return -1;
     }
 
-    if (!nh.searchParam("/arm/base_link", base_frame) || !nh.getParam("/arm/base_link", base_frame))
+    if (!nh.searchParam(node_namespace + "/base_link", base_frame) || !nh.getParam(node_namespace + "/base_link", base_frame))
     {
         ROS_ERROR_NAMED("kinematic_chain::Main", "base link parameter not found! '%s'?", base_frame.c_str());
         return -1;
     }
 
-    if (!nh.searchParam("/arm/tip_link", tip_frame) || !nh.getParam("/arm/tip_link", tip_frame))
+    if (!nh.searchParam(node_namespace + "/tip_link", tip_frame) || !nh.getParam(node_namespace + "/tip_link", tip_frame))
     {
         ROS_ERROR_NAMED("kinematic_chain::Main", "tip link parameter not found! '%s'?", tip_frame.c_str());
         return -1;
