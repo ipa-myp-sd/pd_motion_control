@@ -1,0 +1,3 @@
+# Kinematic chain parameter
+base_link: arm_base_link
+tip_link: arm_7_link

@@ -1,0 +1,18 @@
+# state of robot consits of joint values and joint angles
+#pd_control/RobotState robot_state
+sensor_msgs/JointState robot_state
+
+---
+# jacobian linear velocity component
+# it has dimesion 3 rows with dof (no of joints) columns
+geometry_msgs/Vector3[] jac_linear_vel
+
+# jacobian angular velocity component
+# it has dimesion 3 rows with dof (no of joints) columns
+geometry_msgs/Vector3[] jac_angular_vel
+
+# Message used for debugging information
+string message
+
+# Success of FK calculation
+bool jac_success

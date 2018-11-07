@@ -1,0 +1,7 @@
+geometry_msgs/PoseStamped goal_pose_stamped
+---
+# Message used for debugging information
+string message
+
+# Success of execution
+bool success

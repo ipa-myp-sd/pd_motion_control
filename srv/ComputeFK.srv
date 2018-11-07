@@ -1,0 +1,25 @@
+## The frame_id in the header message is the frame in which
+# the forward kinematics poses will be returned
+Header header
+
+# state of robot consits of joint values and joint angles
+#pd_control/RobotState robot_state
+sensor_msgs/JointState robot_state
+
+# A vector of link name for which forward kinematics must be computed
+string[] fk_link_names
+---
+# eef posiition in the Cartesian space
+geometry_msgs/PoseStamped eef_pose_stamped
+
+# position of request link into Cartesian Space
+geometry_msgs/PoseStamped[] fk_pose_stamped
+
+# The list of link name corresponding to the poses
+string[] fk_link_names
+
+# Message used for debugging information
+string message
+
+# Success of FK calculation
+bool fk_success
