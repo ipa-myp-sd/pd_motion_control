@@ -35,7 +35,7 @@ bool KinematicChain::initialize(const std::string& robot_description, const std:
         return false;
     }
 
-    dimension_ = kdl_chain_.getNrOfSegments();
+    dimension_ = kdl_chain_.getNrOfJoints(); //kdl_chain_.getNrOfSegments();
     ROS_WARN_STREAM("Segments: " << kdl_chain_.getNrOfSegments() << "\t Jonits: " << kdl_chain_.getNrOfJoints());
 
     fk_solver_.reset(new KDL::ChainFkSolverPos_recursive(kdl_chain_));
@@ -44,13 +44,23 @@ bool KinematicChain::initialize(const std::string& robot_description, const std:
     // chain information
     fk_chain_info_.joint_names.clear();
     fk_chain_info_.link_names.clear();
-    for (std::size_t i = 0; i < kdl_tree.getNrOfJoints(); i++)
+    for (std::size_t i = 3; i < kdl_chain_.getNrOfSegments(); i++)
     {
+      ROS_INFO("Hello");
         const std::string& joint_name = kdl_chain_.getSegment(i).getJoint().getName();
+        std::cout << "joint names: " << joint_name << std::endl;
         fk_chain_info_.joint_names.push_back(joint_name);
 
         fk_chain_info_.link_names.push_back(urdf_model_->getJoint(joint_name).get()->child_link_name);
-        moveit_msgs::JointLimits limit;
+
+        ROS_INFO_STREAM(urdf_model_->getJoint(joint_name)->axis.x);
+        ROS_INFO_STREAM(urdf_model_->getJoint(joint_name)->axis.y);
+        ROS_INFO_STREAM(urdf_model_->getJoint(joint_name)->axis.z);
+                ROS_INFO_STREAM(kdl_chain_.getSegment(i).getJoint().getType());
+        ROS_INFO("Hello1");
+        //todo: uncomment and push joint limit correctly, the problem arise from urdf_limit paramter
+
+        /*moveit_msgs::JointLimits limit;
         limit.joint_name = joint_name;
 
         boost::shared_ptr<urdf::JointLimits> urdf_limit = urdf_model_->getJoint(joint_name).get()->limits;
@@ -66,7 +76,7 @@ bool KinematicChain::initialize(const std::string& robot_description, const std:
         ROS_INFO_STREAM_NAMED("KinematicChain::initialize",
                               "joint name: " << joint_name.c_str() << "  limit.min_position: " << limit.min_position
                                              << "  limit.max_position: " << limit.max_position << "  limit.max_velocity:  "
-                                             << limit.max_velocity);
+                                             << limit.max_velocity);*/
     }
 
     compute_fk_srv_ = nh_.advertiseService("ComputeFK", &KinematicChain::computeFKCallBack, this);
