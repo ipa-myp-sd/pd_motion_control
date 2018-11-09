@@ -45,7 +45,8 @@ class KinematicChain
     /** @brief KinematicChain: distructor of the class */
     ~KinematicChain()
     {
-        ;
+      fk_solver_.reset(new KDL::ChainFkSolverPos_recursive(kdl_chain_));
+      jac_solver_.reset(new KDL::ChainJntToJacSolver(kdl_chain_));
     }
 
     bool initialize(const std::string& robot_description = "robot_description", const std::string& base_frame = "",
